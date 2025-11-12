@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whether Application</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="main">
+        <div class="main2">
+            <div class="main3">
+                <input type="search" placeholder="Enter city name" id="search">
+                <button id="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+            <div class="cityname">
+                <h1 id="city">rajahmundry</h1>
+                <img src="clear.png" alt="" class="image" id="img">
+                <p id="temp">20&#8451 </p>
+                <p id="present">clear sky</p>
+
+                <div class="deg">
+                    <div class="deg2">
+                        <div class="inner">
+                            <img src="humidity.png" alt="" style="    height: 60px;width: 70px;">
+                            <h1 id="humid">20%</h1>
+                        </div>
+                        <p id="">humidity</p>
+                    </div>
+                     <div class="deg2">
+                        <div class="inner">
+                            <img src="wind.png" alt="" style="    height: 60px;width: 70px;">>
+                            <h1 id="wind">20%</h1>
+                        </div>
+                        <p id="">wind speed</p>
+                    </div>
+                </div>
+            </div>
+             <p id="error">city name is invalid</p>
+
+        </div>
+    </div>
+
+    <script>
+
+        const WeatherApi = async(cityName)=>{
+            const resId = "92dd17382a7efd5799347478cd954e57"
+            const wheatherid = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${resId}`
+
+            const res = await fetch(wheatherid);
+            const data = await res.json();
+
+            console.log(data)
+
+
+            if(data.name === undefined){
+                alert("city name is invalid")
+            }
+
+            document.querySelector("#city").innerHTML = data.name;
+            document.querySelector("#temp").innerHTML = Math.round(data.main.temp)+"&#8451";
+            document.querySelector("#present").innerHTML = data.weather[0].description;
+            document.querySelector("#humid").innerHTML = data.main.humidity+"%";
+            document.querySelector("#wind").innerHTML = data.wind.speed+"km/h";
+
+            const img = document.querySelector("#img")
+            if(data.weather[0].main == "Clouds"){
+                img.src = "clouds.png"
+            }else if(data.weather[0].main == "Rainy"){
+                img.src = "rainy.png"
+            }else if(data.weather[0].main == "Clear"){
+                img.src = "clear.png"
+            }else if(data.weather[0].main == "Mist"){
+                img.src = "mist.png"
+
+            }
+            else{
+                img.src = "snow.png"
+            }
+
+        }
+
+        document.querySelector("#btn").addEventListener("click",()=>{
+            const adres = document.querySelector("#search").value;
+            WeatherApi(adres);
+        });
+
+        
+            if(data.name === undefined){
+                const inValid = document.querySelector("#cityname")
+                inValid.style.display = "none"
+                const err = document.querySelector("#error")
+                err.style.display = "block"
+            }else{
+                 const inValid = document.querySelector("#cityname")
+                inValid.style.display = "block"
+                const err = document.querySelector("#error")
+                err.style.display = "none"
+
+            }
+
+    </script>
+    
+</body>
+</html>
